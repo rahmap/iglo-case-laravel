@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasAvatar
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+	    'avatar'
     ];
 
     /**
@@ -47,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+	
+	public function getFilamentAvatarUrl(): ?string
+	{
+		return asset($this->avatar);
+	}
 }
