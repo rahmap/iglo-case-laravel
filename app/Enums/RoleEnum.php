@@ -6,6 +6,7 @@ enum RoleEnum: string
 {
     case CustomerService = 'customer_service';
     case Supervisor = 'supervisor';
+    case Staff = 'staff';
 	
 	public static function getAll(bool $withKey = false, string $keyName = 'name'): array
 	{

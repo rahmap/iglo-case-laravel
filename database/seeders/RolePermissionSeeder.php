@@ -20,7 +20,7 @@ class RolePermissionSeeder extends Seeder
 	    $permissions = PermissionEnum::getAll('name');
 	    
 	    collect($permissions)->each(function ($permission) {
-		    Permission::firstOrCreate($permission);
+		    Permission::updateOrCreate(['name' => $permission['name']], $permission);
 	    });
 		
 		$users = [
@@ -45,16 +45,28 @@ class RolePermissionSeeder extends Seeder
 					PermissionEnum::AccountOpeningsAccess,
 					PermissionEnum::AccountOpeningsApprover
 				]
+			],
+			[
+				'name' => 'Staff',
+				'email' => 'staff_case_laravel@yopmail.com',
+				'password' => bcrypt('abc12345'),
+				'avatar' => 'images/staff-profile.png',
+				'role' => RoleEnum::Staff,
+				'permissions' => [
+				
+				]
 			]
 		];
 		
 		collect($users)->each(function ($item) {
-			$user = User::create(Arr::except($item, ['role', 'permissions']));
-			$role = Role::firstOrCreate([
+			$user = User::updateOrCreate(['email' => $item['email']], Arr::except($item, ['role', 'permissions']));
+			$role = Role::updateOrCreate(['name' => $item['role']], [
 				'name' => $item['role']
 			]);
-	        $userRole = $user->assignRole($role);
-			$userRole->syncPermissions($item['permissions']);
+			if(count($item['permissions']) > 0){
+				$role->syncPermissions($item['permissions']);
+			}
+	        $user->assignRole($role);
 		});
     }
 }
