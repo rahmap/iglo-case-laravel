@@ -6,7 +6,7 @@
 - composer install
 - npm i
 - php artisan key:generate
-- php storage:link
+- php artisan storage:link
 - php artisan migrate --seed
 
 ## Running App
