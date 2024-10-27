@@ -32,7 +32,7 @@ class CustomerResource extends Resource
                 Forms\Components\TextInput::make('account_number')
                     ->required()
 	                ->maxLength(255)
-	                ->unique()
+	                ->unique(ignoreRecord: true)
             ]);
     }
 
